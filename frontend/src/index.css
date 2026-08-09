@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-ink text-paper font-body;
+}
+
+h1, h2, h3 {
+  @apply font-display italic font-semibold;
+}
+
+::selection {
+  background: #C9A227;
+  color: #0B1F1E;
+}
