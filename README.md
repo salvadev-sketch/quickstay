@@ -14,6 +14,13 @@ Reference screenshots capture the full planned UX from the project walkthrough:
 - Stripe checkout for payments
 - Property owner dashboard (implied via nav/account patterns)
 
+## Done ✅
+
+- ✅ Repo created
+- ✅ README documented
+- ✅ Interactive frontend prototype (Concierge-style, no backend)
+- ✅ Frontend assets uploaded (icons, images, logo)
+
 ## Planned stack
 
 - Frontend: React
