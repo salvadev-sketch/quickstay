@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickStay — Concierge Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,500;0,600;1,500;1,600&family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B1F1E;
+    --ink-raised:#12302E;
+    --paper:#F3EEE4;
+    --paper-dim:#E7E0D0;
+    --brass:#C9A227;
+    --brass-deep:#8F7318;
+    --slate:#9FB3AE;
+    --line:rgba(243,238,228,0.14);
+    --radius:3px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--ink); color:var(--paper);
+    font-family:'Manrope', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--brass); color:var(--ink);}
+  h1,h2,h3,.display{ font-family:'Newsreader', serif; font-style:italic; font-weight:600; letter-spacing:-0.01em; }
+  .mono{font-family:'Space Mono', monospace; letter-spacing:0.03em;}
+
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:24px 44px; border-bottom:1px solid var(--line);
+    position:sticky; top:0; background:var(--ink); z-index:50;
+  }
+  .brand{ font-family:'Newsreader', serif; font-style:italic; font-weight:600; font-size:23px; color:var(--paper); }
+  .brand .dot{color:var(--brass);}
+  .nav-right{display:flex; align-items:center; gap:30px;}
+  .nav-link{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.12em;
+    color:var(--slate); cursor:pointer; border:none; background:none;
+    font-family:'Manrope',sans-serif; font-weight:700;
+  }
+  .nav-link.active{color:var(--brass);}
+  .btn{
+    font-family:'Manrope',sans-serif; font-weight:700; font-size:12px;
+    text-transform:uppercase; letter-spacing:0.08em;
+    padding:11px 22px; border-radius:var(--radius); border:1px solid var(--brass);
+    background:var(--brass); color:var(--ink); cursor:pointer;
+    transition:transform .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.outline{background:transparent; color:var(--paper); border-color:var(--line);}
+  .btn.small{padding:8px 16px; font-size:11px;}
+
+  .hero{
+    padding:80px 44px 56px; max-width:1140px; margin:0 auto;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.16em;
+    color:var(--brass); font-weight:700; margin-bottom:20px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:''; width:24px; height:1px; background:var(--brass);}
+  .hero h1{font-size:58px; line-height:1.06; max-width:680px; color:var(--paper);}
+  .hero p{color:var(--slate); font-size:16px; max-width:460px; margin-top:18px; line-height:1.6; font-style:normal;}
+
+  .itinerary-bar{
+    margin-top:38px; display:grid; grid-template-columns:1.3fr 1fr 1fr 0.8fr auto;
+    background:var(--paper); border-radius:var(--radius); overflow:hidden; max-width:820px;
+  }
+  .itinerary-bar > div{ padding:14px 18px; border-right:1px solid var(--paper-dim); }
+  .itinerary-bar label{display:block; font-family:'Space Mono'; font-size:10px; text-transform:uppercase; color:var(--brass-deep); margin-bottom:4px;}
+  .itinerary-bar input{border:none; outline:none; background:transparent; font-family:'Manrope'; font-size:13px; color:var(--ink); width:100%;}
+  .itinerary-bar button{
+    border:none; background:var(--ink); color:var(--brass); font-weight:700;
+    font-family:'Manrope'; font-size:12px; text-transform:uppercase; letter-spacing:0.06em;
+    cursor:pointer;
+  }
+
+  .section{max-width:1140px; margin:0 auto; padding:60px 44px;}
+  .section-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:30px;}
+  .section-head h2{font-size:30px; color:var(--paper);}
+  .section-head .mono{color:var(--slate); font-size:11px;}
+
+  .hotel-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  .hotel-card{
+    background:var(--ink-raised); border:1px solid var(--line); border-radius:var(--radius);
+    overflow:hidden; cursor:pointer; transition:transform .2s ease, border-color .2s ease;
+  }
+  .hotel-card:hover{ transform:translateY(-3px); border-color:var(--brass); }
+  .hotel-img{
+    height:170px; background:linear-gradient(135deg,#1c3f3c,#0B1F1E);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Mono'; font-size:11px; color:var(--slate); letter-spacing:0.1em;
+    position:relative;
+  }
+  .badge{
+    position:absolute; top:12px; left:12px; background:var(--brass); color:var(--ink);
+    font-size:10px; font-weight:700; padding:4px 9px; border-radius:20px; text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+  .hotel-body{padding:18px 20px;}
+  .hotel-body h3{font-size:19px; color:var(--paper); margin-bottom:6px;}
+  .hotel-loc{color:var(--slate); font-size:12px; margin-bottom:10px;}
+  .hotel-foot{display:flex; justify-content:space-between; align-items:center;}
+  .price{font-family:'Space Mono'; color:var(--brass); font-size:15px;}
+  .stars{color:var(--brass); font-size:12px;}
+
+  /* Modal: hotel detail */
+  .overlay{
+    position:fixed; inset:0; background:rgba(11,31,30,0.7);
+    display:none; align-items:center; justify-content:center; z-index:100; padding:20px;
+  }
+  .overlay.show{display:flex;}
+  .modal{
+    background:var(--paper); color:var(--ink); width:460px; max-width:100%;
+    border-radius:var(--radius); overflow:hidden; position:relative;
+  }
+  .modal-hero{ height:150px; background:linear-gradient(135deg,#C9A227,#8F7318); position:relative;}
+  .close-x{
+    position:absolute; top:14px; right:16px; cursor:pointer; color:var(--paper);
+    font-size:18px; background:rgba(11,31,30,0.4); border:none; width:28px; height:28px; border-radius:50%;
+  }
+  .modal-body{padding:26px 28px;}
+  .modal-body h3{font-size:22px; margin-bottom:4px;}
+  .modal-body .hotel-loc{margin-bottom:16px;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;}
+  .field{border:1px solid var(--paper-dim); border-radius:var(--radius); padding:10px 12px;}
+  .field label{display:block; font-family:'Space Mono'; font-size:9px; text-transform:uppercase; color:var(--brass-deep); margin-bottom:3px;}
+  .field input{border:none; outline:none; font-family:'Manrope'; font-size:13px; width:100%; background:transparent;}
+  .book-btn{width:100%; margin-top:6px;}
+
+  /* login modal */
+  .modal.login{width:380px; padding:34px 30px;}
+  .modal.login h3{font-size:21px; margin-bottom:6px;}
+  .modal.login p.sub{color:var(--slate); font-size:13px; margin-bottom:22px; font-style:normal;}
+  .modal.login input{width:100%; padding:12px 14px; border:1px solid var(--paper-dim); border-radius:var(--radius); margin-bottom:12px; font-family:'Manrope'; font-size:14px;}
+  .divider{display:flex; align-items:center; gap:10px; color:var(--slate); font-size:11px; margin:14px 0;}
+  .divider::before,.divider::after{content:''; flex:1; height:1px; background:var(--paper-dim);}
+
+  /* Boarding-pass confirmation */
+  .boarding-overlay{ position:fixed; inset:0; background:rgba(11,31,30,0.75); display:none; align-items:center; justify-content:center; z-index:110; }
+  .boarding-overlay.show{display:flex;}
+  .pass{
+    display:flex; width:460px; max-width:92vw; background:var(--paper); color:var(--ink);
+    border-radius:var(--radius); overflow:hidden; transform:scale(0.85); opacity:0;
+    transition:all .4s cubic-bezier(.2,1.4,.4,1);
+  }
+  .pass.show{transform:scale(1); opacity:1;}
+  .pass-main{flex:1; padding:26px;}
+  .pass-main .eyebrow2{font-family:'Space Mono'; font-size:10px; color:var(--brass-deep); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px;}
+  .pass-main h3{font-size:22px; margin-bottom:14px;}
+  .pass-row{display:flex; justify-content:space-between; margin-bottom:10px; font-size:12px;}
+  .pass-row span:first-child{color:var(--slate); text-transform:uppercase; font-family:'Space Mono'; font-size:10px;}
+  .pass-stub{
+    width:120px; border-left:2px dashed var(--ink); display:flex; flex-direction:column;
+    align-items:center; justify-content:center; padding:16px; background:var(--paper-dim);
+    position:relative;
+  }
+  .pass-stub .code{font-family:'Space Mono'; font-size:13px; writing-mode:vertical-rl; letter-spacing:0.1em;}
+  .pass-stub::before, .pass-stub::after{
+    content:''; position:absolute; width:16px; height:16px; background:var(--ink); border-radius:50%; left:-9px;
+  }
+  .pass-stub::before{top:-8px;} .pass-stub::after{bottom:-8px;}
+  .pass-close{position:absolute; top:16px; right:16px; cursor:pointer; color:var(--slate); font-size:16px; background:none;border:none;}
+
+  footer{ border-top:1px solid var(--line); padding:32px 44px; text-align:center; color:var(--slate); font-size:11px; font-family:'Space Mono'; }
+
+  @media(max-width:820px){ .hotel-grid{grid-template-columns:1fr;} .itinerary-bar{grid-template-columns:1fr 1fr; }}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand"><span class="dot">⌂</span> QuickStay</div>
+  <div class="nav-right">
+    <button class="nav-link active">Hotels</button>
+    <button class="nav-link">My Bookings</button>
+    <button class="btn small" id="login-btn">Sign in</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow">Itinerary №0412 — Reserve a stay</div>
+  <h1>Your gateway, held<br>at the front desk.</h1>
+  <p style="font-style:normal;">Search handpicked properties the way a concierge tracks them — by date, by guest, confirmed on the spot.</p>
+
+  <div class="itinerary-bar">
+    <div><label>Destination</label><input placeholder="Where to?"></div>
+    <div><label>Check-in</label><input type="date"></div>
+    <div><label>Check-out</label><input type="date"></div>
+    <div><label>Guests</label><input placeholder="1" value="1"></div>
+    <button>Search</button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <h2>Featured stays</h2>
+    <span class="mono">HANDPICKED, THIS SEASON</span>
+  </div>
+  <div class="hotel-grid" id="hotel-grid"></div>
+</div>
+
+<div class="overlay" id="hotel-overlay">
+  <div class="modal">
+    <div class="modal-hero"><button class="close-x" id="close-hotel">×</button></div>
+    <div class="modal-body">
+      <h3 id="modal-title">Urbanza Suites</h3>
+      <div class="hotel-loc" id="modal-loc">Main Road 123 Street, 23 Colony</div>
+      <div class="field-row">
+        <div class="field"><label>Check-in</label><input type="date"></div>
+        <div class="field"><label>Check-out</label><input type="date"></div>
+      </div>
+      <div class="field-row">
+        <div class="field" style="grid-column:1/3;"><label>Guests</label><input value="2"></div>
+      </div>
+      <button class="btn book-btn" id="confirm-book">Reserve — <span id="modal-price">$399</span>/night</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="login-overlay">
+  <div class="modal login">
+    <button class="close-x" id="close-login" style="position:absolute;top:16px;right:16px;background:none;color:var(--slate);">×</button>
+    <h3>Sign in to QuickStay</h3>
+    <p class="sub">Welcome back. Please sign in to continue.</p>
+    <button class="btn outline" style="width:100%;margin-bottom:10px;color:var(--ink);border-color:var(--paper-dim);">◎ Continue with Google</button>
+    <div class="divider">or</div>
+    <input placeholder="Email address">
+    <button class="btn" style="width:100%;">Continue →</button>
+  </div>
+</div>
+
+<div class="boarding-overlay" id="boarding-overlay">
+  <div class="pass" id="pass">
+    <button class="pass-close" id="close-pass">×</button>
+    <div class="pass-main">
+      <div class="eyebrow2">Reservation confirmed</div>
+      <h3 id="pass-hotel">Urbanza Suites</h3>
+      <div class="pass-row"><span>Check-in</span><span id="pass-in">—</span></div>
+      <div class="pass-row"><span>Check-out</span><span id="pass-out">—</span></div>
+      <div class="pass-row"><span>Guests</span><span id="pass-guests">2</span></div>
+      <div class="pass-row"><span>Total</span><span id="pass-total" class="mono">$399</span></div>
+    </div>
+    <div class="pass-stub"><span class="code" id="pass-code">QS-7749</span></div>
+  </div>
+</div>
+
+<footer>© 2026 QUICKSTAY — CONCIERGE PROTOTYPE, NO BACKEND</footer>
+
+<script>
+const hotels = [
+  {name:"Urbanza Suites", loc:"Main Road 123 St, 23 Colony", price:399, rating:4.5, badge:"Best Seller"},
+  {name:"Urbanza Suites — Double", loc:"Main Road 123 St, 23 Colony", price:299, rating:4.5, badge:null},
+  {name:"Urbanza Suites — Deluxe", loc:"Main Road 123 St, 23 Colony", price:199, rating:4.5, badge:"Best Seller"},
+  {name:"Coastal Retreat", loc:"Marina Bay, 8 Colony", price:349, rating:4.7, badge:null},
+  {name:"Palm Grove Villa", loc:"Sunset Ave, 12 Colony", price:459, rating:4.8, badge:"Best Seller"},
+  {name:"The Meridian", loc:"Central Park Rd, 5 Colony", price:279, rating:4.4, badge:null},
+];
+
+const grid = document.getElementById('hotel-grid');
+hotels.forEach(h=>{
+  const card = document.createElement('div');
+  card.className = 'hotel-card';
+  card.innerHTML = `
+    <div class="hotel-img">
+      ${h.badge ? `<span class="badge">${h.badge}</span>` : ''}
+      ROOM PREVIEW
+    </div>
+    <div class="hotel-body">
+      <h3>${h.name}</h3>
+      <div class="hotel-loc">${h.loc}</div>
+      <div class="hotel-foot">
+        <span class="price">$${h.price}/night</span>
+        <span class="stars">★ ${h.rating}</span>
+      </div>
+    </div>
+  `;
+  card.onclick = ()=> openHotel(h);
+  grid.appendChild(card);
+});
+
+const hotelOverlay = document.getElementById('hotel-overlay');
+function openHotel(h){
+  document.getElementById('modal-title').textContent = h.name;
+  document.getElementById('modal-loc').textContent = h.loc;
+  document.getElementById('modal-price').textContent = '$'+h.price;
+  hotelOverlay.dataset.price = h.price;
+  hotelOverlay.dataset.name = h.name;
+  hotelOverlay.classList.add('show');
+}
+document.getElementById('close-hotel').onclick = ()=> hotelOverlay.classList.remove('show');
+hotelOverlay.onclick = e=>{ if(e.target===hotelOverlay) hotelOverlay.classList.remove('show'); };
+
+const boardingOverlay = document.getElementById('boarding-overlay');
+const pass = document.getElementById('pass');
+document.getElementById('confirm-book').onclick = ()=>{
+  document.getElementById('pass-hotel').textContent = hotelOverlay.dataset.name;
+  document.getElementById('pass-total').textContent = '$'+hotelOverlay.dataset.price;
+  const inputs = hotelOverlay.querySelectorAll('input[type=date]');
+  document.getElementById('pass-in').textContent = inputs[0].value || '29 Apr 2026';
+  document.getElementById('pass-out').textContent = inputs[1].value || '30 Apr 2026';
+  document.getElementById('pass-code').textContent = 'QS-' + Math.floor(1000+Math.random()*8999);
+  hotelOverlay.classList.remove('show');
+  boardingOverlay.classList.add('show');
+  setTimeout(()=>pass.classList.add('show'), 30);
+};
+document.getElementById('close-pass').onclick = ()=>{
+  pass.classList.remove('show');
+  setTimeout(()=>boardingOverlay.classList.remove('show'), 300);
+};
+
+const loginOverlay = document.getElementById('login-overlay');
+document.getElementById('login-btn').onclick = ()=> loginOverlay.classList.add('show');
+document.getElementById('close-login').onclick = ()=> loginOverlay.classList.remove('show');
+loginOverlay.onclick = e=>{ if(e.target===loginOverlay) loginOverlay.classList.remove('show'); };
+</script>
+</body>
+</html>
