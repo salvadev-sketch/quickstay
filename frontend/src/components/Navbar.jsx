@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import logo from "../assets/logo.svg";
 
 export default function Navbar() {
   return (
     <nav className="flex items-center justify-between px-11 py-6 border-b border-white/10 sticky top-0 bg-ink z-50">
-      <Link to="/" className="font-display italic font-semibold text-xl flex items-center gap-2">
-        <span className="text-brass not-italic">⌂</span> QuickStay
+      <Link to="/" className="flex items-center">
+        <img src={logo} alt="QuickStay" className="h-[22px] w-auto" />
       </Link>
       <div className="flex items-center gap-7">
         <Link to="/hotels" className="text-xs uppercase tracking-widest text-slate font-bold hover:text-brass">
