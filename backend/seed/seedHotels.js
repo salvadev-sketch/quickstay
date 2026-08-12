@@ -2,6 +2,8 @@ import "dotenv/config";
 import connectDB from "../config/db.js";
 import Hotel from "../models/Hotel.js";
 
+const SITE_URL = "https://quickstay-3zb1u6ebz-salvadev-sketchs-projects.vercel.app";
+
 const sampleHotels = [
   {
     name: "Urbanza Suites",
@@ -9,7 +11,7 @@ const sampleHotels = [
     location: "Main Road 123 Street, 23 Colony",
     pricePerNight: 399,
     rating: 4.5,
-    images: [],
+    images: [`${SITE_URL}/roomImg1.png`],
     amenities: ["Room Service", "Mountain View", "Pool Access"],
     ownerId: "seed_owner_1",
     isBestSeller: true,
@@ -20,7 +22,7 @@ const sampleHotels = [
     location: "Main Road 123 Street, 23 Colony",
     pricePerNight: 299,
     rating: 4.5,
-    images: [],
+    images: [`${SITE_URL}/roomImg2.png`],
     amenities: ["Room Service", "City View"],
     ownerId: "seed_owner_1",
     isBestSeller: false,
@@ -31,7 +33,7 @@ const sampleHotels = [
     location: "Main Road 123 Street, 23 Colony",
     pricePerNight: 199,
     rating: 4.5,
-    images: [],
+    images: [`${SITE_URL}/roomImg3.png`],
     amenities: ["Room Service", "Skyline View"],
     ownerId: "seed_owner_1",
     isBestSeller: true,
