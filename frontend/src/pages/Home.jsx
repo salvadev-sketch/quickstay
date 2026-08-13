@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../lib/api";
 import HotelCard from "../components/HotelCard";
+import heroImage from "../assets/heroImage.png";
 
 export default function Home() {
   const [hotels, setHotels] = useState([]);
@@ -25,7 +26,12 @@ export default function Home() {
 
   return (
     <div>
-      <div className="max-w-[1140px] mx-auto px-11 pt-20 pb-14 border-b border-white/10">
+      <div
+        className="relative bg-cover bg-center border-b border-white/10"
+        style={{ backgroundImage: `url(${heroImage})` }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/40" />
+        <div className="relative max-w-[1140px] mx-auto px-11 pt-20 pb-14">
         <div className="flex items-center gap-2.5 text-[11px] uppercase tracking-widest text-brass font-bold mb-5 before:content-[''] before:w-6 before:h-px before:bg-brass">
           Itinerary №0412 — Reserve a stay
         </div>
@@ -47,6 +53,7 @@ export default function Home() {
             Search
           </button>
         </form>
+        </div>
       </div>
 
       <div className="max-w-[1140px] mx-auto px-11 py-14">
