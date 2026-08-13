@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { getHotelImage } from "../lib/hotelImage";
 
 export default function HotelCard({ hotel }) {
   return (
@@ -6,13 +7,17 @@ export default function HotelCard({ hotel }) {
       to={`/hotels/${hotel._id}`}
       className="block bg-ink-raised border border-white/10 rounded overflow-hidden hover:-translate-y-1 hover:border-brass transition-all"
     >
-      <div className="h-40 bg-gradient-to-br from-[#1c3f3c] to-ink flex items-center justify-center relative">
+      <div className="h-40 relative">
+        <img
+          src={getHotelImage(hotel)}
+          alt={hotel.name}
+          className="w-full h-full object-cover"
+        />
         {hotel.isBestSeller && (
           <span className="absolute top-3 left-3 bg-brass text-ink text-[10px] font-bold uppercase px-2.5 py-1 rounded-full tracking-wide">
             Best Seller
           </span>
         )}
-        <span className="font-mono text-[11px] text-slate tracking-wide">ROOM PREVIEW</span>
       </div>
       <div className="p-5">
         <h3 className="text-lg font-display italic mb-1">{hotel.name}</h3>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth, SignInButton, SignedIn, SignedOut } from "@clerk/clerk-react";
 import { api } from "../lib/api";
+import { getHotelImage } from "../lib/hotelImage";
 
 export default function HotelDetail() {
   const { id } = useParams();
@@ -43,7 +44,11 @@ export default function HotelDetail() {
     <div className="max-w-[1140px] mx-auto px-11 py-14">
       <div className="flex justify-center">
         <div className="bg-paper text-ink w-full max-w-md rounded overflow-hidden">
-          <div className="h-36 bg-gradient-to-br from-brass to-brass-deep" />
+          <img
+            src={getHotelImage(hotel)}
+            alt={hotel.name}
+            className="h-36 w-full object-cover"
+          />
           <div className="p-7">
             <h3 className="text-xl mb-1">{hotel.name}</h3>
             <p className="text-sm text-ink/60 mb-4 not-italic">{hotel.location}</p>
