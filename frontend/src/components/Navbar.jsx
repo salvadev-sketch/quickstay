@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/clerk-react";
 import logo from "../assets/logo.svg";
 
 export default function Navbar() {
+  const { user } = useUser();
+  const isOwner = user?.publicMetadata?.role === "owner";
+
   return (
     <nav className="flex items-center justify-between px-11 py-6 border-b border-white/10 sticky top-0 bg-ink z-50">
       <Link to="/" className="flex items-center">
@@ -16,9 +19,11 @@ export default function Navbar() {
           <Link to="/my-bookings" className="text-xs uppercase tracking-widest text-slate font-bold hover:text-brass">
             My Bookings
           </Link>
-          <Link to="/owner" className="text-xs uppercase tracking-widest text-slate font-bold hover:text-brass">
-            Owner
-          </Link>
+          {isOwner && (
+            <Link to="/owner" className="text-xs uppercase tracking-widest text-slate font-bold hover:text-brass">
+              Owner
+            </Link>
+          )}
           <UserButton afterSignOutUrl="/" />
         </SignedIn>
         <SignedOut>
