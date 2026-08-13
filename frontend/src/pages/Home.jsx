@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../lib/api";
 import HotelCard from "../components/HotelCard";
-import heroImage from "../assets/heroImage.png";
+import heroImage from "../assets/roomImg1.png";
 
 export default function Home() {
   const [hotels, setHotels] = useState([]);
